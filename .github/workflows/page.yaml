@@ -1,0 +1,46 @@
+name: Generate and Deploy Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install qiniu python-dotenv tqdm
+
+    - name: Get list of files from Qiniu
+      run: |
+        python scripts/get_list_files.py --prefix 'Q宠宝贝' --raw-json > data.json
+      env:
+        QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+        QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+        QINIU_BUCKET_NAME: ${{ secrets.QINIU_BUCKET_NAME }}
+        QINIU_URL_PREFIX: ${{ secrets.QINIU_URL_PREFIX }}
+
+    - name: Generate HTML index pages
+      run: |
+        python scripts/generate_index.py
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./output
