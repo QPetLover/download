@@ -2,11 +2,11 @@
 import argparse
 from qiniu import Auth, BucketManager
 from urllib.parse import quote
-# import dotenv
+import dotenv
 import os, json
 
 # 初始化
-# dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
+dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
 access_key = os.getenv('QINIU_ACCESS_KEY')
 secret_key = os.getenv('QINIU_SECRET_KEY')
 bucket_name = os.getenv('QINIU_BUCKET_NAME')

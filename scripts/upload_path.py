@@ -4,11 +4,10 @@ import argparse
 from tqdm import tqdm
 from qiniu import Auth, put_file, etag, BucketManager
 import qiniu.config
-# import dotenv
+import dotenv
 
 # 初始化
-# 初始化
-# dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
+dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
 access_key = os.getenv('QINIU_ACCESS_KEY')
 secret_key = os.getenv('QINIU_SECRET_KEY')
 bucket_name = os.getenv('QINIU_BUCKET_NAME')
