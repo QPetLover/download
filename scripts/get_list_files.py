@@ -66,7 +66,9 @@ if __name__ == "__main__":
     files = list_files(args.prefix, args.limit, args.delimiter, args.marker)
     files_with_url = []
     for file in files: # add url
-        files_with_url.append({'key':file['key'], 'url':f"{url_prefix}/{quote(file['key'])}"})
+        key = file['key']
+        if key.endswith('/'): continue # skip directory
+        files_with_url.append({'key':key, 'url':f"{url_prefix}/{quote(file['key'])}"})
     if args.raw_json:
         print(json.dumps(files_with_url, indent=2, ensure_ascii=False))
     else:
