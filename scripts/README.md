@@ -24,6 +24,7 @@ export QINIU_URL_PREFIX=''
 - `get_list_files.py`：获取 `prefix` 目录下的文件列表
 - `upload_single_file.py`：上传单个文件
 - `upload_path.py`：上传目录下的所有文件
+- `generate_index.py`：生成网站索引
 
 使用 `-h` 可以查看脚本用法。
 
