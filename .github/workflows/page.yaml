@@ -39,8 +39,22 @@ jobs:
       run: |
         python scripts/generate_index.py
 
+    - name: Copy files to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        echo "$SSH_CONFIG" > ~/.ssh/config
+        chmod 700 ~/.ssh
+        chmod 600 ~/.ssh/id_rsa
+        ssh -vT myserver "echo Connected to myserver"
+        rsync -rvz --delete output/ myserver:/var/www/qpetcdn
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./output
+   
