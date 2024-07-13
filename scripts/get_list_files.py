@@ -3,7 +3,7 @@ import argparse
 from qiniu import Auth, BucketManager
 from urllib.parse import quote
 import dotenv
-import os
+import os, json
 
 # 初始化
 dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     for file in files: # add url
         files_with_url.append({'key':file['key'], 'url':f"{url_prefix}/{quote(file['key'])}"})
     if args.raw_json:
-        print(files_with_url)
+        print(json.dumps(files_with_url, indent=2, ensure_ascii=False))
     else:
         markdown = generate_markdown(files_with_url)
         print(markdown)
