@@ -5,7 +5,8 @@ import os
 # 读取 data.json 文件
 with open('data.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
-
+    data.sort(key=lambda x: x['key'], reverse=True)
+    
 # 创建输出目录
 output_dir = 'output'
 if not os.path.exists(output_dir):
@@ -39,3 +40,15 @@ def generate_html(directory, path=''):
         f.write(html)
 
 generate_html(files)
+
+# 生成根目录的HTML
+html = '<html><head><meta charset="utf-8"><title>QPetLover 下载页</title></head><body><h1>Q宠相关资源</h1><ul>'
+for item in data:
+    html += f'<li><a href="{item["url"]}">{item["key"]}</a></li>'
+html += '</ul></body></html>'
+
+index_path = os.path.join(output_dir, 'index.html')
+with open(index_path, 'w', encoding='utf-8') as f:
+    f.write(html)
+
+print("HTML files generated successfully.")
